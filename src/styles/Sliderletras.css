@@ -1,0 +1,30 @@
+.slider-letras {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    background: linear-gradient(to bottom, #000, #131313); /* Degradado hacia negro */
+
+    color: #fff; /* Texto blanco */
+    padding: 1rem 0;
+  }
+  
+  .slider-track {
+    display: flex;
+    gap: 2rem;
+    animation: scroll 10s linear infinite; /* Animación infinita */
+  }
+  
+  .slider-word {
+    font-size: 6rem;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }

@@ -1,0 +1,69 @@
+
+.services-container {
+    width: 100%;
+    height: 100vh; /* El contenedor ocupa toda la altura de la ventana */
+    overflow: hidden; /* Esencial para que el pin funcione y no se vea el desbordamiento del track */
+    position: relative; /* Necesario para el 'pin' de GSAP ScrollTrigger */
+}
+
+.services-track {
+    display: flex;
+    height: 100%; /* Ocupa toda la altura del contenedor */
+    will-change: transform; /* Optimización para animaciones de transformación */
+}
+
+.service-panel {
+    width: 100vw; /* Cada panel ocupa el ancho completo de la ventana */
+    height: 100vh; /* Cada panel ocupa la altura completa de la ventana */
+    flex-shrink: 0; /* Evita que los paneles se encojan si el track es más pequeño */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 40px 20px; /* Más padding para contenido */
+    box-sizing: border-box;
+}
+
+.service-content {
+    max-width: 800px;
+    opacity: 0; /* Inicialmente invisible para la animación de entrada */
+    transform: translateY(30px); /* Posición inicial para la animación */
+}
+
+.service-content h1 {
+    font-size: clamp(2.5em, 5vw, 4em); /* Tamaño de fuente responsivo */
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+}
+
+.service-content p {
+    font-size: clamp(1em, 2.5vw, 1.5em); /* Tamaño de fuente responsivo */
+    line-height: 1.7;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+}
+
+/* Colores de fondo para cada servicio con degradado horizontal */
+.service-web {
+  background: linear-gradient(to right, #000000, #1a1a1a, #131313);
+}
+
+.service-audit {
+  background: linear-gradient(to right, #131313, #1a4b8f, #2575fc);
+}
+
+.service-marketing {
+  background: linear-gradient(to right, #2575fc, #f98b33, #f7b733);
+}
+
+.service-design {
+  background: linear-gradient(to right, #f7b733, #46e89d, #92fe9d);
+}
+
+.services-track {
+  transition: background 0.5s ease-in-out;
+}
+.services-component-wrapper {
+    overflow-x: hidden;
+}
