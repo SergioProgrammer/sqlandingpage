@@ -10,7 +10,7 @@ const Hero = () => {
       </video>
       <div className="content">
         <h1>DESIGN STUDIO</h1>
-        <p>Estudio de diseño y desarrollo en España</p>
+        <p>Estudio de diseño Gráfico y desarrollo Web</p>
       </div>
     </section>
   );

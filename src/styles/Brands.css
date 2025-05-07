@@ -1,0 +1,61 @@
+.brands {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(transparent, #000); /* Degradado de transparente a negro */
+  color: #fff; /* Asegura que el texto/logos sean visibles sobre el fondo */
+  position: relative;
+  z-index: 1; /* Asegura que esté por encima del video */
+}
+
+.brands-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand-logo {
+  width: 100px; /* Ajusta el tamaño de los logos */
+  filter: brightness(0) invert(1); /* Hace los logos blancos */
+  opacity: 0; /* Oculto inicialmente */
+  transform: translateY(30px); /* Posición inicial para el efecto */
+  animation: fadeInLogo 1s ease-out forwards;
+  transition: transform 0.3s ease;
+}
+
+.brand-logo:hover {
+  transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
+}
+
+/* Aplica un retraso progresivo a cada logo */
+.brand-logo:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.brand-logo:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.brand-logo:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.brand-logo:nth-child(4) {
+  animation-delay: 0.8s;
+}
+.brand-logo:nth-child(5) {
+  animation-delay: 1s;
+}
+.brand-logo:nth-child(6) {
+  animation-delay: 1.2s;
+}
+.brand-logo:nth-child(7) {
+  animation-delay: 1.4s;
+}
+
+@keyframes fadeInLogo {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

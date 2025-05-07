@@ -11,7 +11,7 @@
 }
 
 .hero-video {
-  position: absolute;
+  position: fixed; /* Cambia a fixed para que el video abarque ambas secciones */
   top: 0;
   left: 0;
   width: 100%;
