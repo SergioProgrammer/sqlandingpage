@@ -1,0 +1,64 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #e3e4e1;
+  overflow: hidden;
+}
+
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que el video cubra todo el fondo */
+  z-index: -1; /* Envía el video al fondo */
+}
+
+.content {
+  z-index: 1; /* Asegura que el texto esté encima del video */
+  animation: fadeInHero 2s ease-out;
+}
+
+.hero h1 {
+  font-size: 8vw;
+  font-weight: 900; /* Aumenta el grosor de la fuente */
+  font-family: 'Poppins', sans-serif; /* Ejemplo de fuente más redondeada */
+  letter-spacing: 0.1em; /* Aumenta el espacio entre letras */
+  animation: fadeInText 2s ease-out forwards;
+}
+
+.hero p {
+  font-size: 2.5vw;
+  font-weight: 600; /* Más grueso para que sea más visible */
+  font-family: 'Poppins', sans-serif; /* Fuente consistente con el título */
+  letter-spacing: 0.05em; /* Espaciado ligero entre letras */
+  margin-top: 1rem;
+  animation: fadeInText 2s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeInHero {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

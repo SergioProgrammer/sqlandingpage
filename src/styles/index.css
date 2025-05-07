@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Establece un fondo blanco y una tipografía básica para la aplicación */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #2d2d2d;
+    color: #333;
+  }
+  
+  /* Establece un color base y un tipo de letra para todo el contenido */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Arial', sans-serif;
+    font-weight: 900;
+    color: #e7e1e1;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  ul, ol {
+    list-style: none;
+  }
+  
+ 
+  
