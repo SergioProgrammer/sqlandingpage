@@ -13,9 +13,9 @@ const Brands = () => {
     'ader',
     'logocaia',
     'logocasacriado',
-    'logoguantxe',
+    'guantxe',
     'clinicab'
-  ]; // Nombres de los archivos de imagen
+  ]; 
 
   return (
     <section className="brands">

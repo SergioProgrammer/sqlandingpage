@@ -1,4 +1,3 @@
-// TimelineV2.js
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -16,7 +15,7 @@ const TimelineV2 = () => {
     ];
 
     const wrapperRef = useRef(null); // Contenedor de toda la sección de timeline
-    const pinContainerRef = useRef(null); // El que se va a pinear (100vh)
+    const pinContainerRef = useRef(null); 
     const cometTrackRef = useRef(null);
     const cometHeadRef = useRef(null);
 
@@ -71,8 +70,6 @@ const TimelineV2 = () => {
         });
 
         // --- Pin Principal ---
-        // El pin durará lo suficiente para pasar por todos los paneles.
-        // Cada panel "ocupa" 100vh de scroll.
         const pinDuration = window.innerHeight * (numPanels); // Para 5 paneles, 500vh de scroll "pineado"
         
         mainPinScrollTriggerRef.current = ScrollTrigger.create({
@@ -80,21 +77,17 @@ const TimelineV2 = () => {
             pin: pinContainer,
             start: 'top top',
             end: () => `+=${pinDuration}`,
-            // markers: {startColor: "green", endColor: "red", indent:0}, // 
             invalidateOnRefresh: true,
         });
 
 
         // --- Animación del Cometa y Cabeza ---
-        // Esta animación se controla por el scroll a través de todo el `wrapper`
-        // desde que empieza el pin hasta que termina.
         const cometTl = gsap.timeline({
             scrollTrigger: {
-                trigger: wrapper, // O podría ser pinContainer si el wrapper no tiene más altura
-                start: 'top top', // Cuando el wrapper (o pinContainer) llega al top
-                end: () => `+=${pinDuration}`, // Misma duración que el pin
-                scrub: 1, // Suaviza con el scroll
-                // markers: {startColor: "blue", endColor: "orange", indent: 40}, // Marcador para el cometa
+                trigger: wrapper, 
+                start: 'top top', 
+                end: () => `+=${pinDuration}`, 
+                scrub: 1, 
                 onCreate: self => cometScrollTriggerRef.current = self,
             }
         });
@@ -110,34 +103,23 @@ const TimelineV2 = () => {
             ease: 'none',
         }, 0);
 
-
         // --- Animación para cada Panel ---
         const tempPanelSTs = [];
         panels.forEach((panel, index) => {
             const content = contentRefs.current[index];
             const dot = dotRefs.current[index];
-
-            // Cada panel se activará en un punto diferente del scroll.
-            // Dividimos la duración total del pin entre el número de paneles.
-            // El primer panel se activa al inicio, el segundo después de 1* (pinDuration/numPanels) de scroll, etc.
-            // El 'start' es relativo al 'start' del ScrollTrigger del pin principal.
-            
-            // La 'ventana de activación' para cada panel.
-            // ej: panel 0: 0% a 20% del scroll total del pin
-            //     panel 1: 20% a 40% del scroll total del pin
-            const sectionStartPercent = (index / numPanels); // 0, 0.2, 0.4...
-            const sectionEndPercent = ((index + 1) / numPanels); // 0.2, 0.4, 0.6...
+            const sectionStartPercent = (index / numPanels); 
+            const sectionEndPercent = ((index + 1) / numPanels); 
 
             const panelST = ScrollTrigger.create({
-                trigger: wrapper, // El trigger general, no el panel en sí para este ST
-                start: () => `top+=${sectionStartPercent * pinDuration} top`, // Cuando empieza la "sección" de este panel
-                end: () => `top+=${sectionEndPercent * pinDuration} top`,     // Cuando termina la "sección" de este panel
-                // markers: {startColor: `hsl(${index*60}, 100%, 50%)`, endColor: `hsl(${index*60}, 100%, 50%)`, indent: 80 + index*20 },
+                trigger: wrapper, 
+                start: () => `top+=${sectionStartPercent * pinDuration} top`, 
+                end: () => `top+=${sectionEndPercent * pinDuration} top`,     
                 toggleClass: { targets: panel, className: 'is-active' }, // Muestra/oculta el panel
                 onEnter: () => {
                     dotRefs.current.forEach(d => d.classList.remove('is-active-dot'));
                     if (dot) dot.classList.add('is-active-dot');
-                    // Animar entrada del contenido
+                    // Anima entrada del contenido
                     if (content) {
                         gsap.fromTo(content,
                             { opacity: 0, x: -30 },
@@ -146,22 +128,21 @@ const TimelineV2 = () => {
                     }
                 },
                 onLeave: () => {
-                    // Opcional: animar salida del contenido
                     if (content) {
                         gsap.to(content, { opacity: 0, x: 30, duration: 0.3, ease: 'power2.in' });
                     }
                 },
-                onEnterBack: () => { // Cuando se scrollea hacia atrás y se entra en la sección del panel
+                onEnterBack: () => { 
                     dotRefs.current.forEach(d => d.classList.remove('is-active-dot'));
                     if (dot) dot.classList.add('is-active-dot');
                     if (content) {
                          gsap.fromTo(content,
-                            { opacity: 0, x: 30 }, // Entra desde la derecha si es hacia atrás
+                            { opacity: 0, x: 30 }, 
                             { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', delay: 0.1 }
                         );
                     }
                 },
-                onLeaveBack: () => { // Cuando se scrollea hacia atrás y se sale de la sección del panel
+                onLeaveBack: () => { 
                     if (content) {
                         gsap.to(content, { opacity: 0, x: -30, duration: 0.3, ease: 'power2.in' });
                     }
@@ -192,7 +173,7 @@ const TimelineV2 = () => {
     return (
         <>
             <div className="timeline-v2-intro-title">
-                <h1>Nuestro Proceso Cósmico</h1>
+                <h1>Nuestro Proceso Creativo</h1>
                 <p>Un viaje a través de las fases de creación, donde cada estrella es un hito.</p>
             </div>
             <div className="timeline-v2-wrapper" ref={wrapperRef}>
@@ -203,13 +184,13 @@ const TimelineV2 = () => {
                     {timelineData.map((item, index) => (
                         <div key={`dot-${item.id}`} ref={addToDotRefs} className="timeline-v2-dot"></div>
                     ))}
-                    {/* Los paneles se superponen aquí dentro de pinContainer */}
+                    
                     {timelineData.map((item, index) => (
                         <section
                             key={item.id}
                             className="timeline-v2-panel" // CSS maneja opacity/visibility con .is-active
                             ref={addToPanelRefs}
-                            // style={{zIndex: numPanels - index}} // Para el orden si es necesario
+                            
                         >
                             <div className="timeline-v2-content" ref={addToContentRefs}>
                                 <h2>{item.title}</h2>

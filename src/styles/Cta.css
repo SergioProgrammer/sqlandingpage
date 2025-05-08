@@ -1,0 +1,107 @@
+/* CTA.css */
+
+.cta-section {
+    width: 100%;
+    height: 100vh; /* Pantalla completa */
+    background-color: #FF6B00; /* Naranja vibrante, puedes ajustarlo (ej: #FF7F50 - Coral, #FFA500 - Naranja) */
+    display: flex;
+    flex-direction: column; /* Para centrar y posible título arriba */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    color: #ffffff; /* Texto blanco para buen contraste */
+    font-family: 'Arial', sans-serif; /* O la fuente de tu proyecto */
+}
+
+.cta-title { /* Título opcional arriba del formulario */
+    font-size: clamp(2em, 5vw, 3.5em);
+    font-weight: 600;
+    margin-bottom: 40px; /* Espacio entre título y formulario */
+    text-align: center;
+    line-height: 1.2;
+}
+
+.cta-form-container {
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo sutil para el contenedor del form */
+    padding: 40px 50px;
+    border-radius: 12px; /* Bordes redondeados suaves */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    width: 100%;
+    max-width: 450px; /* Ancho máximo del formulario */
+    text-align: center; /* Centrar el botón si es inline-block */
+}
+
+.cta-form-label {
+    display: block; /* Cada label en su línea */
+    font-size: 0.95em;
+    margin-bottom: 8px;
+    text-align: left; /* Alineación del texto del label */
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.cta-form-input {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 25px; /* Espacio entre inputs */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil */
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo del input casi opaco */
+    color: #333333; /* Color del texto del input */
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-form-input::placeholder {
+    color: #999999;
+}
+
+.cta-form-input:focus {
+    outline: none;
+    border-color: #ffffff; /* Borde blanco al enfocar */
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25); /* "Glow" sutil al enfocar */
+}
+
+.cta-form-button {
+    background-color: #ffffff; /* Botón blanco */
+    color: #FF6B00; /* Texto del botón naranja */
+    border: none;
+    padding: 15px 35px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cta-form-button:hover {
+    background-color: #f0f0f0; /* Un blanco un poco más oscuro al pasar el mouse */
+    transform: translateY(-2px); /* Ligero efecto de elevación */
+}
+
+.cta-form-button:active {
+    transform: translateY(0px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Mensaje de estado (éxito/error) */
+.cta-status-message {
+    margin-top: 20px;
+    font-size: 0.9em;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.cta-status-message.success {
+    background-color: rgba(40, 167, 69, 0.2); /* Verde sutil */
+    color: #c3e6cb; /* Texto para fondo verde */
+    border: 1px solid rgba(40, 167, 69, 0.5);
+}
+
+.cta-status-message.error {
+    background-color: rgba(220, 53, 69, 0.2); /* Rojo sutil */
+    color: #f5c6cb; /* Texto para fondo rojo */
+    border: 1px solid rgba(220, 53, 69, 0.5);
+}

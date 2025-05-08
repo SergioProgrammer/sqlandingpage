@@ -5,7 +5,9 @@ import Hero from './components/Hero.js';
 import Services from './components/Services.js';
 import Sliderletras from './components/Sliderletras.js';
 import TimelineV2 from './components/TimelineV2.js';
+import Cta from './components/Cta.js';
 import './styles/index.css'; 
+import Footer from './components/Footer.js';
 
 function App() {
   useEffect(() => {
@@ -30,6 +32,8 @@ function App() {
       <Sliderletras />
       <Services />
       <TimelineV2 />
+      <Cta />
+      <Footer />
     </div>
   );
 }
