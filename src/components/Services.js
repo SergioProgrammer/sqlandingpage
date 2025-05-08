@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import '../styles/Services.css'; 
+import '../styles/Services.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Services = () => {
     const servicesData = [
-        { id: 'web', title: 'Desarrollo Web', description: 'Creamos sitios web modernos, responsivos y optimizados para tus necesidades.', className: 'service-web', shape1Color: 'rgba(0, 191, 255, 0.08)', shape2Color: 'rgba(0, 150, 255, 0.06)' },
-        { id: 'audit', title: 'Auditoría', description: 'Analizamos tu presencia online para identificar oportunidades y mejorar tu rendimiento.', className: 'service-audit', shape1Color: 'rgba(138, 43, 226, 0.08)', shape2Color: 'rgba(100, 30, 180, 0.06)' },
-        { id: 'marketing', title: 'Marketing Digital', description: 'Estrategias de marketing digital efectivas para alcanzar tus objetivos y conectar con tu audiencia.', className: 'service-marketing', shape1Color: 'rgba(255, 100, 0, 0.08)', shape2Color: 'rgba(255, 150, 50, 0.06)' },
-        { id: 'design', title: 'Diseño Gráfico', description: 'Identidad visual impactante y diseños creativos que comunican tu marca.', className: 'service-design', shape1Color: 'rgba(0, 200, 150, 0.08)', shape2Color: 'rgba(0, 180, 120, 0.06)' },
+        { id: 'web', title: 'Desarrollo Web', description: 'Forjamos experiencias digitales inmersivas, optimizadas para el rendimiento y la conversión en el vasto universo online.' },
+        { id: 'audit', title: 'Auditoría de Marketing', description: 'Exploramos tu ecosistema digital, identificando constelaciones de oportunidad y agujeros negros de ineficiencia.' },
+        { id: 'marketing', title: 'Marketing Actual', description: 'Impulsamos tu marca a nuevas galaxias, conectando con audiencias a través de estrategias de atracción magnética.' },
+        { id: 'design', title: 'Diseño Gráfico', description: 'Creamos identidades visuales que brillan con luz propia, transformando conceptos en arte digital estelar.' },
     ];
 
     const containerRef = useRef(null);
@@ -19,9 +19,8 @@ const Services = () => {
     progressDotsRef.current = [];
 
     const mainTweenRef = useRef(null);
-    const mainScrollTriggerInstanceRef = useRef(null);
-    const panelContentTimelinesRef = useRef([]);
-    const parallaxTweensRef = useRef([]);
+    const mainSTRef = useRef(null);
+    const panelAnimationsRef = useRef([]);
 
     const addToProgressDotsRefs = (el) => el && !progressDotsRef.current.includes(el) && progressDotsRef.current.push(el);
 
@@ -30,41 +29,35 @@ const Services = () => {
         const currentTrack = trackRef.current;
 
         if (!currentContainer || !currentTrack) return;
-
-        const panelsNodeList = currentTrack.children; 
-        const panels = Array.from(panelsNodeList); 
+        const panels = Array.from(currentTrack.children);
         if (panels.length === 0) return;
 
-        // --- Limpieza (como en la versión anterior, asegurando que todo se mate) ---
         const cleanup = () => {
-            if (mainScrollTriggerInstanceRef.current) mainScrollTriggerInstanceRef.current.kill();
+            if (mainSTRef.current) mainSTRef.current.kill();
             if (mainTweenRef.current) mainTweenRef.current.kill();
-            panelContentTimelinesRef.current.forEach(tl => tl && tl.kill());
-            parallaxTweensRef.current.forEach(tween => tween && tween.kill());
+            panelAnimationsRef.current.forEach(anim => anim && anim.kill());
 
-            mainScrollTriggerInstanceRef.current = null;
+            mainSTRef.current = null;
             mainTweenRef.current = null;
-            panelContentTimelinesRef.current = [];
-            parallaxTweensRef.current = [];
+            panelAnimationsRef.current = [];
             progressDotsRef.current.forEach(dot => dot && dot.classList.remove('is-active'));
 
+            gsap.set(currentTrack, { clearProps: "transform" });
             panels.forEach(panel => {
                 const title = panel.querySelector('.service-content h1');
                 const paragraph = panel.querySelector('.service-content p');
-                const shapes = panel.querySelectorAll('.decorative-shape');
+                const dustParticles = panel.querySelectorAll('.cosmic-dust');
 
-                if (title) gsap.set(title, { clearProps: "all" }); 
+                if (title) gsap.set(title, { clearProps: "all" });
                 if (paragraph) gsap.set(paragraph, { clearProps: "all" });
-                shapes.forEach(shape => gsap.set(shape, { clearProps: "all" }));
+                dustParticles.forEach(particle => gsap.set(particle, { clearProps: "all" }));
+                panel.classList.remove('is-active-panel');
             });
-             if(currentTrack) gsap.set(currentTrack, {clearProps: "all"});
         };
         cleanup();
-        // --- Fin Limpieza ---
-
 
         const amountToScroll = -100 * (panels.length - 1);
-        let createdMainST = null;
+        let createdMainSTInstance = null;
 
         const newMainTween = gsap.to(currentTrack, {
             xPercent: amountToScroll,
@@ -72,105 +65,125 @@ const Services = () => {
             scrollTrigger: {
                 trigger: currentContainer,
                 pin: true,
-                scrub: 1.2,
+                scrub: 0.8,
                 snap: {
                     snapTo: 1 / (panels.length - 1),
-                    duration: { min: 0.3, max: 0.6 },
-                    delay: 0.05,
-                    ease: 'power2.inOut',
+                    duration: { min: 0.4, max: 0.7 },
+                    delay: 0.02,
+                    ease: 'power3.inOut',
                 },
-                end: () => `+=${currentContainer.offsetWidth * (panels.length - 1) * 1.5}`,
+                end: () => `+=${currentContainer.offsetWidth * (panels.length - 1) * 1.2}`,
                 invalidateOnRefresh: true,
-                markers: false, 
-                onCreate: self => createdMainST = self,
+                markers: false,
+                onCreate: (self) => createdMainSTInstance = self,
                 onUpdate: self => {
                     const progress = Math.round(self.progress * (panels.length - 1));
-                    progressDotsRef.current.forEach((dot, index) => {
-                        if (dot) dot.classList.toggle('is-active', index === progress);
+                    progressDotsRef.current.forEach((dot, idx) => {
+                        if (dot) dot.classList.toggle('is-active', idx === progress);
                     });
+                    panels.forEach((p, idx) => p.classList.toggle('is-active-panel', idx === progress));
                 },
             },
         });
         mainTweenRef.current = newMainTween;
-        mainScrollTriggerInstanceRef.current = createdMainST;
+        mainSTRef.current = createdMainSTInstance;
 
-        const tempContentTLs = [];
-        const tempParallaxTweens = [];
-
-        panels.forEach((panelElement, index) => { 
+        const tempPanelAnims = [];
+        panels.forEach((panelElement, index) => {
             const title = panelElement.querySelector('.service-content h1');
             const paragraph = panelElement.querySelector('.service-content p');
-            const shapes = panelElement.querySelectorAll('.decorative-shape');
+            const dustParticles = panelElement.querySelectorAll('.cosmic-dust');
 
-          
+            gsap.set([title, paragraph], { autoAlpha: 0 });
+
             if (title && paragraph) {
                 const tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: panelElement,
                         containerAnimation: newMainTween,
-                        start: 'left 70%', 
-                        end: 'right 30%',
+                        start: 'left 65%',
+                        end: 'right 35%',
                         toggleActions: 'play reverse play reverse',
                     }
                 });
-
                 tl.fromTo(title,
-                    { autoAlpha: 0, y: 60, skewX: -10 }, 
-                    { autoAlpha: 1, y: 0, skewX: 0, duration: 0.8, ease: 'power3.out' } 
+                    { autoAlpha: 0, y: 70, rotationX: -70, transformOrigin: "50% 50% -50px" },
+                    { autoAlpha: 1, y: 0, rotationX: 0, duration: 0.9, ease: 'expo.out' }
                 )
                 .fromTo(paragraph,
-                    { autoAlpha: 0, y: 40 },
-                    { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' },
-                    "-=0.5" // Empezar un poco antes de que termine la del título
+                    { autoAlpha: 0, y: 50 },
+                    { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+                    "-=0.6"
                 );
-                tempContentTLs.push(tl);
-            } else {
-                console.warn(`Panel ${index}: Title or Paragraph not found.`);
+                tempPanelAnims.push(tl);
             }
 
-            shapes.forEach((shape, shapeIndex) => {
-                const parallaxTween = gsap.to(shape, {
-                    x: () => gsap.utils.random(-60, 60) * (shapeIndex % 2 === 0 ? -1 : 1), 
-                    y: () => gsap.utils.random(-40, 40),
-                    rotation: () => gsap.utils.random(-25, 25),
-                    scale: () => gsap.utils.random(0.8, 1.2), 
-                    opacity: () => gsap.utils.random(0.5, 1), 
-                    ease: 'none',
+            dustParticles.forEach((particle) => {
+                gsap.set(particle, {
+                    x: () => gsap.utils.random(-15, 15) + "vw",
+                    y: () => gsap.utils.random(-15, 15) + "vh",
+                    scale: () => gsap.utils.random(0.3, 1),
+                    opacity: 0
+                });
+                const particleTween = gsap.timeline({
                     scrollTrigger: {
                         trigger: panelElement,
                         containerAnimation: newMainTween,
-                        scrub: 2, 
-                        start: 'left right', 
-                        end: 'right left',   
+                        scrub: 2.5,
+                        start: 'left right',
+                        end: 'right left',
                     }
-                });
-                tempParallaxTweens.push(parallaxTween);
+                })
+                .to(particle, {
+                    x: () => gsap.utils.random(-25, 25) + "vw",
+                    y: () => gsap.utils.random(-25, 25) + "vh",
+                    opacity: () => gsap.utils.random(0.2, 0.6),
+                    duration: () => gsap.utils.random(3, 6),
+                    ease: 'power1.inOut'
+                })
+                .to(particle, {
+                    opacity: 0,
+                    duration: () => gsap.utils.random(1, 2),
+                    ease: 'power1.inOut'
+                }, ">-=1");
+                tempPanelAnims.push(particleTween);
             });
         });
-        panelContentTimelinesRef.current = tempContentTLs;
-        parallaxTweensRef.current = tempParallaxTweens;
+        panelAnimationsRef.current = tempPanelAnims;
 
-        if (progressDotsRef.current[0]) {
-            progressDotsRef.current[0].classList.add('is-active');
-        }
+        if (progressDotsRef.current[0]) progressDotsRef.current[0].classList.add('is-active');
+        if (panels[0]) panels[0].classList.add('is-active-panel');
 
         return cleanup;
-
     }, [servicesData.length]);
+
+    const renderCosmicDust = (count = 10) => {
+        let dusts = [];
+        for (let i = 0; i < count; i++) {
+            const size = gsap.utils.random(2, 8);
+            dusts.push(
+                <div
+                    key={`dust-${i}`}
+                    className="cosmic-dust"
+                    style={{ width: `${size}px`, height: `${size}px` }}
+                ></div>
+            );
+        }
+        return dusts;
+    };
 
     return (
         <div className="services-container" ref={containerRef}>
             <div className="services-track" ref={trackRef}>
-                {servicesData.map((service, index) => (
+                {servicesData.map((service) => (
                     <section
                         key={service.id}
                         className={`service-panel ${service.className}`}
                     >
-                        <div className="decorative-shape shape-1" style={{ backgroundColor: service.shape1Color }}></div>
-                        <div className="decorative-shape shape-2" style={{ backgroundColor: service.shape2Color }}></div>
-
+                        <div className="nebula-glow"></div> 
+                        
+                        {renderCosmicDust(gsap.utils.random(10, 18))}
                         <div className="service-content">
-                            
                             <h1>{service.title}</h1>
                             <p>{service.description}</p>
                         </div>
@@ -178,7 +191,7 @@ const Services = () => {
                 ))}
             </div>
             <div className="services-progress-indicator">
-                {servicesData.map((service, index) => (
+                {servicesData.map((service) => (
                     <div key={`dot-${service.id}`} className="progress-dot" ref={addToProgressDotsRefs}></div>
                 ))}
             </div>
