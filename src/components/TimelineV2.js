@@ -1,7 +1,8 @@
+// TimelineV2.js
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import '../styles/TimelineV2.css'; 
+import '../styles/TimelineV2.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,8 +15,8 @@ const TimelineV2 = () => {
         { id: 5, title: 'Fase 5: Lanzamiento Épico', description: 'Desplegamos tu proyecto al mundo y te acompañamos en su crecimiento continuo.' },
     ];
 
-    const wrapperRef = useRef(null);
-    const pinContainerRef = useRef(null);
+    const wrapperRef = useRef(null); // Contenedor de toda la sección de timeline
+    const pinContainerRef = useRef(null); // El que se va a pinear (100vh)
     const cometTrackRef = useRef(null);
     const cometHeadRef = useRef(null);
 
@@ -26,195 +27,167 @@ const TimelineV2 = () => {
     const dotRefs = useRef([]);
     dotRefs.current = [];
 
-    const masterTimelineRef = useRef(null);
-    const masterScrollTriggerInstanceRef = useRef(null);
+    // Refs para limpieza
+    const mainPinScrollTriggerRef = useRef(null);
+    const cometScrollTriggerRef = useRef(null);
+    const panelScrollTriggersRef = useRef([]);
 
     const addToPanelRefs = (el) => el && !panelRefs.current.includes(el) && panelRefs.current.push(el);
     const addToContentRefs = (el) => el && !contentRefs.current.includes(el) && contentRefs.current.push(el);
     const addToDotRefs = (el) => el && !dotRefs.current.includes(el) && dotRefs.current.push(el);
 
     useEffect(() => {
-        // --- Asegurarse de que los elementos están listos ---
         const wrapper = wrapperRef.current;
         const pinContainer = pinContainerRef.current;
         const cometTrack = cometTrackRef.current;
         const cometHead = cometHeadRef.current;
 
         if (!wrapper || !pinContainer || !cometTrack || !cometHead || panelRefs.current.length === 0) {
-            console.warn("TimelineV2: Elementos esenciales no encontrados al inicio del useEffect.");
             return;
         }
 
         const panels = panelRefs.current;
         const numPanels = panels.length;
 
-        // --- Limpieza específica ---
-        if (masterScrollTriggerInstanceRef.current) masterScrollTriggerInstanceRef.current.kill();
-        if (masterTimelineRef.current) masterTimelineRef.current.kill();
-        gsap.killTweensOf([cometTrack, cometHead, ...contentRefs.current, ...dotRefs.current, ...panels].filter(Boolean));
-        panelRefs.current.forEach(p => p && p.classList.remove('is-active'));
-        dotRefs.current.forEach(d => {
-            if (d) {
-                d.classList.remove('is-active-dot');
-                d.style.cssText = ''; // Resetear estilos inline
-            }
-        });
-        masterScrollTriggerInstanceRef.current = null;
-        masterTimelineRef.current = null;
-        // --- Fin limpieza específica ---
+        // --- Limpieza Específica ---
+        if (mainPinScrollTriggerRef.current) mainPinScrollTriggerRef.current.kill();
+        if (cometScrollTriggerRef.current) cometScrollTriggerRef.current.kill();
+        panelScrollTriggersRef.current.forEach(st => st && st.kill());
+        gsap.killTweensOf([cometTrack, cometHead, ...contentRefs.current, ...panels.filter(Boolean), ...dotRefs.current].filter(Boolean));
+        mainPinScrollTriggerRef.current = null;
+        cometScrollTriggerRef.current = null;
+        panelScrollTriggersRef.current = [];
+        panels.forEach(p => p && p.classList.remove('is-active'));
+        dotRefs.current.forEach(d => d && d.classList.remove('is-active-dot'));
+        // --- Fin Limpieza ---
 
-
-        // --- Posicionamiento de Puntos ---
+        // Posicionamiento de Puntos
         dotRefs.current.forEach((dot, index) => {
             if (dot) {
                 const yPos = (100 / numPanels) * (index + 0.5);
                 dot.style.top = `${yPos}%`;
                 dot.style.left = `${cometTrack.offsetLeft + (cometTrack.offsetWidth / 2)}px`;
-                dot.style.opacity = '0.5'; // Estado inicial
             }
         });
 
-        // --- Ocultar todos los paneles excepto el primero al inicio ---
-        // (Si no se superponen con CSS, esto no es estrictamente necesario, pero no hace daño)
-        panels.forEach((panel, index) => {
-            if (panel) {
-                gsap.set(panel, { autoAlpha: index === 0 ? 1 : 0 });
-                 // Asegurar que el contenido también esté en su estado inicial correcto
-                if (contentRefs.current[index]) {
-                    gsap.set(contentRefs.current[index], { opacity: index === 0 ? 1: 0, x: index === 0 ? 0 : -30 });
-                }
-            }
+        // --- Pin Principal ---
+        // El pin durará lo suficiente para pasar por todos los paneles.
+        // Cada panel "ocupa" 100vh de scroll.
+        const pinDuration = window.innerHeight * (numPanels); // Para 5 paneles, 500vh de scroll "pineado"
+        
+        mainPinScrollTriggerRef.current = ScrollTrigger.create({
+            trigger: wrapper,
+            pin: pinContainer,
+            start: 'top top',
+            end: () => `+=${pinDuration}`,
+            // markers: {startColor: "green", endColor: "red", indent:0}, // 
+            invalidateOnRefresh: true,
         });
-         if (dotRefs.current[0]) dotRefs.current[0].classList.add('is-active-dot');
-         if (panelRefs.current[0]) panelRefs.current[0].classList.add('is-active');
 
 
-        // --- Definición de la Animación Principal ---
-        // Cada panel "dura" 1 unidad de tiempo en la masterTimeline.
-        // La duración total del scroll será `alturaVentana * (numPanels - 1)`
-        // porque el primer panel ya es visible.
-        const scrollDistanceToEnd = window.innerHeight * (numPanels > 1 ? numPanels -1 : 1);
-
-
-        const masterTl = gsap.timeline({
+        // --- Animación del Cometa y Cabeza ---
+        // Esta animación se controla por el scroll a través de todo el `wrapper`
+        // desde que empieza el pin hasta que termina.
+        const cometTl = gsap.timeline({
             scrollTrigger: {
-                trigger: wrapper,
-                pin: pinContainer,
-                scrub: 1, // O un valor numérico para más suavidad
-                start: 'top top',
-                end: () => `+=${scrollDistanceToEnd}`, // Distancia de scroll para pasar por todos los paneles
-                markers: false, // ¡MUY IMPORTANTE PARA DEPURAR!
-                invalidateOnRefresh: true,
-                onCreate: self => masterScrollTriggerInstanceRef.current = self,
-            },
+                trigger: wrapper, // O podría ser pinContainer si el wrapper no tiene más altura
+                start: 'top top', // Cuando el wrapper (o pinContainer) llega al top
+                end: () => `+=${pinDuration}`, // Misma duración que el pin
+                scrub: 1, // Suaviza con el scroll
+                // markers: {startColor: "blue", endColor: "orange", indent: 40}, // Marcador para el cometa
+                onCreate: self => cometScrollTriggerRef.current = self,
+            }
         });
-        masterTimelineRef.current = masterTl;
 
-       // --- Animación del Cometa por pasos ---
-        gsap.set(cometHead, { opacity: 1 }); // Mostrar desde el principio
-
-        // Comet Track height animado por tramos
-        masterTl.to(cometTrack, {
-            keyframes: Array.from({ length: numPanels }, (_, i) => ({
-                height: `${((i + 1) / numPanels) * 100}%`,
-                duration: 1,
-                ease: 'none',
-            })),
-        }, 0);
-
-        // Comet Head movimiento vertical sincronizado
-        masterTl.to(cometHead, {
-            keyframes: Array.from({ length: numPanels }, (_, i) => ({
-                y: () => `${((i + 1) / numPanels) * pinContainer.offsetHeight - cometHead.offsetHeight / 2}px`,
-                duration: 1,
-                ease: 'none',
-            })),
+        cometTl.to(cometTrack, { height: '100%', ease: 'none' }, 0);
+        cometTl.to(cometHead, {
+            opacity: 1,
+            motionPath: {
+                path: [{x:0, y:0}, {x:0, y: () => pinContainer.offsetHeight - cometHead.offsetHeight / 2}],
+                align: cometTrack,
+                alignOrigin: [0.5, 0],
+            },
+            ease: 'none',
         }, 0);
 
 
+        // --- Animación para cada Panel ---
+        const tempPanelSTs = [];
+        panels.forEach((panel, index) => {
+            const content = contentRefs.current[index];
+            const dot = dotRefs.current[index];
 
-        // --- Animaciones de Transición entre Paneles ---
-        // Vamos a hacer que cada panel tenga su "tiempo" en la timeline.
-        // Si la masterTl dura X en scroll, y tenemos N paneles, cada panel
-        // "ocupa" X/N de ese scroll.
-        // La masterTl por defecto no tiene una duración explícita, se basa en sus tweens.
-        // Vamos a darle una duración implícita con labels o offsets.
+            // Cada panel se activará en un punto diferente del scroll.
+            // Dividimos la duración total del pin entre el número de paneles.
+            // El primer panel se activa al inicio, el segundo después de 1* (pinDuration/numPanels) de scroll, etc.
+            // El 'start' es relativo al 'start' del ScrollTrigger del pin principal.
+            
+            // La 'ventana de activación' para cada panel.
+            // ej: panel 0: 0% a 20% del scroll total del pin
+            //     panel 1: 20% a 40% del scroll total del pin
+            const sectionStartPercent = (index / numPanels); // 0, 0.2, 0.4...
+            const sectionEndPercent = ((index + 1) / numPanels); // 0.2, 0.4, 0.6...
 
-        for (let i = 0; i < numPanels; i++) {
-            const currentPanel = panels[i];
-            const currentContent = contentRefs.current[i];
-            const currentDot = dotRefs.current[i];
-            const nextPanel = panels[i + 1];
-
-            // Label para el inicio de la sección de este panel
-            masterTl.addLabel(`panel-${i}-start`);
-
-            // Activar el dot y panel actual (reafirmar para el primero, activar para los siguientes)
-            masterTl.add(() => {
-                dotRefs.current.forEach(d => d.classList.remove('is-active-dot'));
-                if (currentDot) currentDot.classList.add('is-active-dot');
-                panelRefs.current.forEach(p => p.classList.remove('is-active'));
-                if (currentPanel) currentPanel.classList.add('is-active');
+            const panelST = ScrollTrigger.create({
+                trigger: wrapper, // El trigger general, no el panel en sí para este ST
+                start: () => `top+=${sectionStartPercent * pinDuration} top`, // Cuando empieza la "sección" de este panel
+                end: () => `top+=${sectionEndPercent * pinDuration} top`,     // Cuando termina la "sección" de este panel
+                // markers: {startColor: `hsl(${index*60}, 100%, 50%)`, endColor: `hsl(${index*60}, 100%, 50%)`, indent: 80 + index*20 },
+                toggleClass: { targets: panel, className: 'is-active' }, // Muestra/oculta el panel
+                onEnter: () => {
+                    dotRefs.current.forEach(d => d.classList.remove('is-active-dot'));
+                    if (dot) dot.classList.add('is-active-dot');
+                    // Animar entrada del contenido
+                    if (content) {
+                        gsap.fromTo(content,
+                            { opacity: 0, x: -30 },
+                            { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', delay: 0.1 }
+                        );
+                    }
+                },
+                onLeave: () => {
+                    // Opcional: animar salida del contenido
+                    if (content) {
+                        gsap.to(content, { opacity: 0, x: 30, duration: 0.3, ease: 'power2.in' });
+                    }
+                },
+                onEnterBack: () => { // Cuando se scrollea hacia atrás y se entra en la sección del panel
+                    dotRefs.current.forEach(d => d.classList.remove('is-active-dot'));
+                    if (dot) dot.classList.add('is-active-dot');
+                    if (content) {
+                         gsap.fromTo(content,
+                            { opacity: 0, x: 30 }, // Entra desde la derecha si es hacia atrás
+                            { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', delay: 0.1 }
+                        );
+                    }
+                },
+                onLeaveBack: () => { // Cuando se scrollea hacia atrás y se sale de la sección del panel
+                    if (content) {
+                        gsap.to(content, { opacity: 0, x: -30, duration: 0.3, ease: 'power2.in' });
+                    }
+                },
+                invalidateOnRefresh: true, // importante
             });
-
-            // Si no es el primer panel, animar su aparición (ya que estaba oculto)
-            if (i > 0 && currentPanel && currentContent) {
-                masterTl.to(currentPanel, { autoAlpha: 1, duration: 0.01 }); // Hacer visible el panel
-                masterTl.fromTo(currentContent,
-                    { opacity: 0, x: -30 },
-                    { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' },
-                    ">-0.01" // Un poco después de que el panel sea visible
-                );
-            } else if (i === 0 && currentPanel && currentContent) {
-                 // Para el primer panel, aseguramos que esté visible y su contenido animado si es necesario
-                 // Esto ya se hizo con gsap.set, pero para consistencia si se quiere una animación de entrada.
-                masterTl.to(currentPanel, { autoAlpha: 1, duration: 0.01 });
-                // Si queremos una animación de entrada para el primer contenido:
-                // masterTl.fromTo(currentContent, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' });
-            }
-
-
-            // Si hay un panel siguiente, preparar la transición
-            if (nextPanel) {
-                // Añadir un "espacio" o duración para que este panel esté visible
-                // antes de transicionar al siguiente.
-                // La duración de este "espacio" se distribuirá a lo largo del scroll total.
-                // Cada "paso" entre paneles tomará 1/ (numPanels - 1) del progreso total de la timeline.
-                masterTl.to({}, { duration: 1 }); // Esta duración es relativa a la longitud total del scroll
-
-                // Desvanecer el panel actual y su contenido ANTES de mostrar el siguiente
-                if(currentContent) {
-                    masterTl.to(currentContent, {
-                        opacity: 0,
-                        x: 30,
-                        duration: 0.3,
-                        ease: 'power2.in',
-                    });
-                }
-                masterTl.to(currentPanel, { autoAlpha: 0, duration: 0.01 }, ">-0.2"); // Ocultar panel un poco después de que el contenido empiece a salir
-
-            } else {
-                // Es el último panel, simplemente dejarlo visible
-                masterTl.to({}, { duration: 1 }); // Darle su "tiempo" de visibilidad
-            }
-        }
+            tempPanelSTs.push(panelST);
+        });
+        panelScrollTriggersRef.current = tempPanelSTs;
 
 
         return () => {
-            if (masterScrollTriggerInstanceRef.current) masterScrollTriggerInstanceRef.current.kill();
-            if (masterTimelineRef.current) masterTimelineRef.current.kill();
-            gsap.killTweensOf([wrapper, pinContainer, cometTrack, cometHead, ...panels, ...contentRefs.current, ...dotRefs.current].filter(Boolean));
-            panelRefs.current.forEach(p => p && p.classList.remove('is-active'));
-            dotRefs.current.forEach(d => {
-                 if(d) {
-                    d.classList.remove('is-active-dot');
-                    d.style.cssText = '';
-                 }
-            });
-            masterScrollTriggerInstanceRef.current = null;
-            masterTimelineRef.current = null;
+            // Limpieza específica al desmontar
+            if (mainPinScrollTriggerRef.current) mainPinScrollTriggerRef.current.kill();
+            if (cometScrollTriggerRef.current) cometScrollTriggerRef.current.kill();
+            panelScrollTriggersRef.current.forEach(st => st && st.kill());
+
+            gsap.killTweensOf([wrapper, pinContainer, cometTrack, cometHead, ...panels.filter(Boolean), ...contentRefs.current, ...dotRefs.current].filter(Boolean));
+            panels.forEach(p => p && p.classList.remove('is-active'));
+            dotRefs.current.forEach(d => d && d.classList.remove('is-active-dot'));
+
+            mainPinScrollTriggerRef.current = null;
+            cometScrollTriggerRef.current = null;
+            panelScrollTriggersRef.current = [];
         };
-    }, [timelineData.length]); // Rehacer si cambia el número de items
+    }, [timelineData.length]);
 
     return (
         <>
@@ -223,36 +196,27 @@ const TimelineV2 = () => {
                 <p>Un viaje a través de las fases de creación, donde cada estrella es un hito.</p>
             </div>
             <div className="timeline-v2-wrapper" ref={wrapperRef}>
-                <div className="timeline-v2-pin-container" ref={pinContainerRef}>
+                <div className="timeline-v2-pin-container" ref={pinContainerRef}> {/* 100vh, pinned */}
                     <div className="timeline-v2-comet-track" ref={cometTrackRef}>
                         <div className="comet-head" ref={cometHeadRef}></div>
                     </div>
                     {timelineData.map((item, index) => (
-                        <div
-                            key={`dot-${item.id}`}
-                            ref={addToDotRefs}
-                            className="timeline-v2-dot"
-                        ></div>
+                        <div key={`dot-${item.id}`} ref={addToDotRefs} className="timeline-v2-dot"></div>
                     ))}
-                    <div className="timeline-v2-panels-container">
-                        {timelineData.map((item, index) => (
-                            <section
-                                key={item.id}
-                                className="timeline-v2-panel"
-                                ref={addToPanelRefs}
-                                style={{
-                                    // Para asegurar que inicialmente solo el primero sea visible si se superponen
-                                    // y GSAP maneja la opacidad.
-                                    // autoAlpha: index === 0 ? 1 : 0 // GSAP lo manejará
-                                }}
-                            >
-                                <div className="timeline-v2-content" ref={addToContentRefs}>
-                                    <h2>{item.title}</h2>
-                                    <p>{item.description}</p>
-                                </div>
-                            </section>
-                        ))}
-                    </div>
+                    {/* Los paneles se superponen aquí dentro de pinContainer */}
+                    {timelineData.map((item, index) => (
+                        <section
+                            key={item.id}
+                            className="timeline-v2-panel" // CSS maneja opacity/visibility con .is-active
+                            ref={addToPanelRefs}
+                            // style={{zIndex: numPanels - index}} // Para el orden si es necesario
+                        >
+                            <div className="timeline-v2-content" ref={addToContentRefs}>
+                                <h2>{item.title}</h2>
+                                <p>{item.description}</p>
+                            </div>
+                        </section>
+                    ))}
                 </div>
             </div>
         </>

@@ -152,3 +152,55 @@
     /* opacity: 0; */
     /* pointer-events: none; */
 }
+.timeline-v2-dot.is-active-dot {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.3);
+    background-color: #00ffff;
+    box-shadow: 0 0 25px #00ffff, 0 0 40px #00c3ff, 0 0 60px #0077ff, 0 0 15px #fff inset;
+}
+
+.timeline-v2-panel {
+    width: 100%;
+    height: 100vh; /* Cada panel es pantalla completa */
+    display: flex;
+    /* align-items: center; */ /* Quitado para permitir posicionamiento más flexible del contenido */
+    position: absolute; /* IMPORTANTE: Los paneles se superpondrán */
+    top: 0;
+    left: 0;
+    opacity: 0; /* Inicialmente invisibles */
+    visibility: hidden; /* Inicialmente no visibles ni interactuables */
+    pointer-events: none; /* No interactuables por defecto */
+    /* background-color: #000; /* Si el wrapper ya lo tiene, es redundante */
+    will-change: opacity, visibility;
+}
+
+.timeline-v2-panel.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 5; /* El panel activo encima */
+}
+
+.timeline-v2-content {
+    position: absolute;
+    top: 50%;
+    left: calc(10vw + 80px);
+    transform: translateY(-50%);
+    max-width: 60%;
+    color: #e0e0e0;
+    /* La opacidad y transformación para la entrada se manejarán por GSAP por panel */
+}
+
+.timeline-v2-content h2 {
+    font-size: clamp(2em, 5vw, 3.5em);
+    color: #00ffff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00c3ff;
+}
+
+.timeline-v2-content p {
+    font-size: clamp(1em, 2.5vw, 1.3em);
+    line-height: 1.7;
+    color: #cccccc;
+}
+
