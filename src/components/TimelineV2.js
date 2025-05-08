@@ -11,7 +11,7 @@ const TimelineV2 = () => {
         { id: 2, title: 'Fase 2: Conceptualización', description: 'Traducimos los insights en conceptos sólidos y estrategias de diseño y tecnología.' },
         { id: 3, title: 'Fase 3: Creación', description: 'Diseñadores y desarrolladores colaboran para construir una experiencia digital única y funcional.' },
         { id: 4, title: 'Fase 4: Refinamiento', description: 'Iteramos y probamos exhaustivamente, puliendo cada detalle para alcanzar la excelencia.' },
-        { id: 5, title: 'Fase 5: Lanzamiento Épico', description: 'Desplegamos tu proyecto al mundo y te acompañamos en su crecimiento continuo.' },
+        { id: 5, title: 'Fase 5: Lanzamiento', description: 'Desplegamos tu proyecto al mundo y te acompañamos en su crecimiento continuo.' },
     ];
 
     const wrapperRef = useRef(null); // Contenedor de toda la sección de timeline
