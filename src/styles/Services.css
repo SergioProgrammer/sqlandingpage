@@ -39,9 +39,7 @@
       radial-gradient(circle at 50% 50%, rgba(230, 230, 255, 0.2) 1px, transparent 2px),
       radial-gradient(circle at 35% 60%, rgba(200, 200, 255, 0.15) 0.5px, transparent 1.5px),
       radial-gradient(circle at 65% 40%, rgba(200, 200, 255, 0.15) 0.5px, transparent 1.5px);
-  background-size:
-      50px 50px, 70px 70px, 90px 90px, 60px 60px, 80px 80px; /* Tamaños para los patrones de estrellas */
-  background-repeat: repeat; /* Todas las estrellas se repiten */
+  
   opacity: 0;
   transition: opacity 1.5s cubic-bezier(0.25, 0.1, 0.25, 1); /* Transición suave para el fondo */
   z-index: 0; /* Detrás de todo */
