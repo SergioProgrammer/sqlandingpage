@@ -49,14 +49,10 @@ function App() {
 
   const LoaderComponent = () => (
     <div className={`loader ${!isAppLoading && isContentLoaded ? 'hidden' : ''}`}>
-      <div className="loader-text">Loading</div>
-      <div className="loader-dots">
-        <div className="loader-dot"></div>
-        <div className="loader-dot"></div>
-        <div className="loader-dot"></div>
-      </div>
+      <div className="loader-text">Loading...</div>
     </div>
   );
+
   return (
     <>
       {isAppLoading && <LoaderComponent />}
