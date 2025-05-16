@@ -1,93 +1,210 @@
 .personas-section {
-  width: 100%;
-  min-height: 70vh;
-  background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 0;
+    width: 100%;
+    min-height: 90vh;
+    background: #0A0A0A;
+    color: #d1d5db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px 80px 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+}
+
+.personas-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .personas-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
 }
 
 .personas-title {
-  font-size: 2.8rem;
-  font-weight: 700;
-  margin-bottom: 2.5rem;
-  letter-spacing: 1px;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(3.5em, 7vw, 5em);
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 80px;
+    letter-spacing: 0.5px;
+    opacity: 0;
+    transform: translateY(30px);
 }
 
 .personas-cards {
-  display: flex;
-  gap: 2.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: nowrap;
 }
 
 .persona-card {
-  background: rgba(255,255,255,0.05);
-  border-radius: 18px;
-  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
-  padding: 2.5rem 2rem 2rem 2rem;
-  width: 270px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.2s;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 28px;
+    padding: 70px 60px;
+    width: 100%;
+    max-width: 600px;
+    min-width: 320px;
+    margin: 0 0 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                border-color 0.4s ease,
+                background-color 0.4s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(50px) scale(0.96);
 }
 
 .persona-card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 8px 32px 0 rgba(0,191,255,0.18);
+    transform: translateY(-12px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.persona-avatar-wrapper {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 40px;
+    position: relative;
+    perspective: 500px;
+}
+
+.persona-avatar-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(145deg, #2a2e37, #1e222a);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3),
+                0 5px 15px rgba(0,0,0,0.2),
+                0 0 0 3px rgba(255,255,255,0.03);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform-style: preserve-3d;
+}
+
+.persona-card:hover .persona-avatar-container {
+    transform: rotateY(15deg) rotateX(5deg) scale(1.05);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3),
+                0 8px 25px rgba(0,0,0,0.25),
+                0 0 0 3px rgba(255,255,255,0.07);
 }
 
 .persona-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-bottom: 1.2rem;
-  background: #fff;
-  box-shadow: 0 0 0 4px #00bfff44, 0 0 20px #00bfff33;
-  display: block;
+    width: 90%;
+    height: 90%;
+    display: block;
+    transform: translateZ(10px);
 }
 
-
-
 .persona-name {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-  color: #00bfff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #ffffff;
+    letter-spacing: 0.5px;
 }
 
 .persona-role {
-  font-size: 1rem;
-  font-weight: 400;
-  margin-bottom: 0.7rem;
-  color: #fff;
-  opacity: 0.85;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-bottom: 22px;
+    color: #a0aec0;
+    opacity: 0.95;
 }
 
 .persona-desc {
-  font-size: 0.98rem;
-  color: #e0e0e0;
-  opacity: 0.9;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.35em;
+    line-height: 1.7;
+    color: #cbd5e0;
+    opacity: 0.9;
 }
 
 .personas-summary {
-  margin-top: 1.5rem;
-  font-size: 1.15rem;
-  color: #fff;
-  opacity: 0.92;
+    margin-top: 90px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.7em;
+    color: #e5e7eb;
+    line-height: 1.9;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    transform: translateY(30px);
 }
 
 .personas-summary span {
-  color: #00bfff;
-  font-weight: 600;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+@media (max-width: 800px) {
+    .persona-card {
+        max-width: 340px;
+        width: calc(100% - 40px);
+        padding: 40px 10px;
+    }
+    .personas-cards {
+        gap: 30px;
+    }
+    .persona-name {
+        font-size: 2em;
+    }
+    .persona-role {
+        font-size: 1.2em;
+    }
+    .persona-desc {
+        font-size: 1em;
+    }
+    .personas-summary {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 1100px) {
+    .personas-cards {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+    .persona-card {
+        max-width: 98vw;
+        width: 98vw;
+        padding: 40px 10px;
+    }
+}
+
+@media (min-width: 900px) {
+    .personas-cards {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 50px;
+    }
+    .persona-card {
+        max-width: 600px;
+        width: 45vw;
+    }
 }
