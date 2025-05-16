@@ -106,7 +106,7 @@ const Personas = () => {
                                 <AvatarDev />
                             </div>
                         </div>
-                        <h3 className="persona-name">Sergio</h3>
+                        <h3 className="persona-name">Sergio Sandoval</h3>
                         <p className="persona-role">Desarrollo & Estrategia Digital</p>
                         <p className="persona-desc">
                             Impulsando la innovación con código y datos para crear soluciones digitales que definen el futuro.
@@ -118,7 +118,7 @@ const Personas = () => {
                                 <AvatarArt />
                             </div>
                         </div>
-                        <h3 className="persona-name">Sara</h3>
+                        <h3 className="persona-name">Sara Quintana</h3>
                         <p className="persona-role">Diseño de Marca & Experiencia Visual</p>
                         <p className="persona-desc">
                             El arte de transformar conceptos en narrativas visuales impactantes que conectan y perduran.
