@@ -1,10 +1,9 @@
 .timeline-v2-wrapper {
-    /* Este wrapper es importante si quieres el fondo negro solo para esta sección */
     background-color: #000000;
-    color: #f0f0f0;
+    color: #ffffff;
     overflow: hidden; /* Para el pin y evitar scrolls inesperados */
-    /* No necesita un height específico si va a ser 'pinned'
-       y su 'end' en ScrollTrigger se basa en el contenido interno */
+    
+      
 }
 
 .timeline-v2-pin-container {
@@ -17,7 +16,7 @@
 
 /* El "Cometa" o línea de progreso */
 .timeline-v2-comet-track {
-    position: absolute;
+    position: absolute; 
     /* Centrado verticalmente y a la izquierda */
     top: 50%;
     left: 10vw; /* O un valor fijo como 100px */
@@ -26,11 +25,11 @@
     height: 0; /* Se animará la altura */
     background: linear-gradient(
         to bottom,
-        rgba(0, 191, 255, 0), /* Transparente al inicio de la estela */
-        rgba(0, 191, 255, 0.8) 70%, /* Azul profundo brillante */
-        #00ffff /* Cian puro en la punta */
+        rgba(0, 191, 255, 0), 
+        rgba(255, 255, 255, 0.8) 70%, 
+        #f5ffff 
     );
-    box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00c3ff, 0 0 40px #0077ff;
+    box-shadow: 0 0 10px #ffffff, 0 0 20px #fcfcfc, 0 0 30px #ffffff, 0 0 40px #ffffff;
     border-radius: 3px;
     z-index: 10;
     will-change: height; /* Optimización */

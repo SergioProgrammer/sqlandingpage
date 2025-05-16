@@ -7,10 +7,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Services = () => {
     const servicesData = [
-        { id: 'web', title: 'Desarrollo Web', description: 'Forjamos experiencias digitales inmersivas, optimizadas para el rendimiento y la conversión en el vasto universo online.' },
-        { id: 'audit', title: 'Auditoría de Marketing', description: 'Exploramos tu ecosistema digital, identificando constelaciones de oportunidad y agujeros negros de ineficiencia.' },
-        { id: 'marketing', title: 'Marketing Actual', description: 'Impulsamos tu marca a nuevas galaxias, conectando con audiencias a través de estrategias de atracción magnética.' },
-        { id: 'design', title: 'Diseño Gráfico', description: 'Creamos identidades visuales que brillan con luz propia, transformando conceptos en arte digital estelar.' },
+        { id: 'web', title: 'Estrategia', description: 'La estrategia guía cada una de nuestras decisiones y está integrada desde el inicio en todo nuestro proceso. Nos especializamos en resolver problemas complejos y en crear soluciones orientadas a resultados: desde optimizar la arquitectura de la información y construir una marca sólida, hasta diseñar wireframes alineados con tus principales KPI.' },
+        { id: 'audit', title: 'Creatividad', description: 'Ya sea que necesites un sitio web, una campaña publicitaria, un sistema de diseño o un video, nuestro enfoque combina diseño audaz con objetivos estratégicos claros. Podemos ser tu equipo creativo principal o complementar a tus equipos internos. En ambos casos, aportamos ideas frescas, procesos consolidados y experiencia. El equipo que te presente la propuesta será el mismo que trabajará contigo.' },
+        { id: 'marketing', title: 'Branding', description: 'Nos destacamos tanto en hacer evolucionar marcas existentes como en dar vida a nuevas. Nuestra experiencia en diversos sectores nos permite aportar una energía renovada a cada proyecto. Gracias a nuestras guías y sistemas, cualquier equipo puede ejecutar con rapidez y coherencia.' },
+        { id: 'design', title: 'Desarrollo', description: 'Creamos identidades visuales que brillan con luz propia, transformando conceptos en arte digital estelar.' },
     ];
 
     const containerRef = useRef(null);

@@ -3,10 +3,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Brands from './components/Brands.js';
 import Hero from './components/Hero.js';
 import Services from './components/Services.js';
-import Sliderletras from './components/Sliderletras.js';
 import TimelineV2 from './components/TimelineV2.js';
 import Cta from './components/Cta.js';
 import Footer from './components/Footer.js';
+import Personas from './components/Personas.js';
 
 import './styles/index.css';
 import './styles/Loader.css';
@@ -62,9 +62,9 @@ function App() {
       >
         <Hero />
         <Brands />
-        <Sliderletras />
         <Services />
         <TimelineV2 />
+        <Personas />
         <Cta />
         <Footer />
       </div>
