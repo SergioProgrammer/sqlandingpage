@@ -182,10 +182,31 @@ const Services = () => {
                     >
                         <div className="nebula-glow"></div>
                         {renderCosmicDust(gsap.utils.random(10, 18))}
+                        {idx === 0 && (
+                            <img
+                                src={process.env.PUBLIC_URL + '/img/estrategia.jpg'}
+                                alt="Estrategia"
+                                className="estrategia-img"
+                            />
+                        )}
+                        {idx === 1 && (
+                            <img
+                                src={process.env.PUBLIC_URL + '/img/creatividad.webp'}
+                                alt="Creatividad"
+                                className="creatividad-img"
+                            />
+                        )}
                         <div className="service-content">
                             <h1>{service.title}</h1>
                             <p>{service.description}</p>
                         </div>
+                        {idx === 2 && (
+                            <img
+                                src={process.env.PUBLIC_URL + '/favicon.png'}
+                                alt="Branding"
+                                className="favicon-img"
+                            />
+                        )}
                     </section>
                 ))}
             </div>

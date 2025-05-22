@@ -35,6 +35,27 @@
   display: flex;
   flex-direction: column;
 }
+.service-panel.panel-0 {
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.panel-0 .service-content {
+  margin-left: 60px;
+}
+
+.panel-0 .estrategia-img {
+  max-width: 540px;
+  width: 28vw;
+  min-width: 180px;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 8px 40px 20px rgba(0,0,0,0.65), 0 0 80px 40px #000;
+  object-fit: cover;
+  display: block;
+  filter: blur(0.5px) drop-shadow(0 0 40px #000) drop-shadow(0 0 80px #000);
+}
 
 /* Panel 2: Título a la derecha */
 .service-panel.panel-1 .service-content {
@@ -45,11 +66,95 @@
   display: flex;
   flex-direction: column;
 }
+/* Panel 2: Imagen a la izquierda y texto a la derecha */
+.service-panel.panel-1 {
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
 
+.panel-1 .creatividad-img {
+  max-width: 540px;
+  width: 28vw;
+  min-width: 180px;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 8px 40px 20px rgba(0,0,0,0.65), 0 0 80px 40px #000;
+  object-fit: cover;
+  display: block;
+  filter: blur(0.5px) drop-shadow(0 0 40px #000) drop-shadow(0 0 80px #000);
+  margin-right: 60px;
+}
+
+.service-panel.panel-1 .service-content {
+  margin-left: 0;
+  margin-right: 0;
+  text-align: right;
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+}
 /* Panel 3: Título a la izquierda */
 .service-panel.panel-2 .service-content {
   margin-left: 0;
   margin-right: auto;
+  text-align: left;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+/* Panel 1: Estrategia */
+.panel-0 .estrategia-img {
+  max-width: 540px;
+  width: 28vw;
+  min-width: 180px;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 8px 40px 20px rgba(0,0,0,0.65), 0 0 80px 40px #000;
+  object-fit: cover;
+  display: block;
+  filter: blur(0.5px) drop-shadow(0 0 40px #000) drop-shadow(0 0 80px #000);
+  margin-right: 40px;
+}
+
+/* Panel 2: Creatividad */
+.panel-1 .creatividad-img {
+  max-width: 540px;
+  width: 28vw;
+  min-width: 180px;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 8px 40px 20px rgba(0,0,0,0.65), 0 0 80px 40px #000;
+  object-fit: cover;
+  display: block;
+  filter: blur(0.5px) drop-shadow(0 0 40px #000) drop-shadow(0 0 80px #000);
+  margin-right: 40px;
+}
+
+/* Panel 3: Branding */
+.service-panel.panel-2 {
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.panel-2 .favicon-img {
+  max-width: 180px;
+  width: 18vw;
+  min-width: 80px;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 8px 40px 20px rgba(0,0,0,0.65), 0 0 80px 40px #000;
+  object-fit: cover;
+  display: block;
+  filter: invert(1) ;
+  margin-left: 280px;
+  margin-bottom: 20px;
+}
+
+.service-panel.panel-2 .service-content {
+  margin-left: 0;
+  margin-right: 0;
   text-align: left;
   align-items: flex-start;
   display: flex;
@@ -65,6 +170,7 @@
   display: flex;
   flex-direction: column;
 }
+
 
 .service-content {
   position: relative;
@@ -101,4 +207,81 @@
   will-change: transform, opacity;
   background-color: rgba(220, 230, 255, 0.1);
   box-shadow: 0 0 5px rgba(220, 230, 255, 0.2), 0 0 8px rgba(173, 216, 230, 0.15);
+}
+/* Responsive: En pantallas pequeñas, apila el texto arriba y la imagen debajo, ambos centrados */
+@media (max-width: 900px) {
+  /* Panel 0: Estrategia */
+  .service-panel.panel-0 {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .service-panel.panel-0 .service-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: center !important;
+    align-items: center !important;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .panel-0 .estrategia-img {
+    margin-right: 0;
+    margin-top: 30px;
+    margin-bottom: 0;
+    width: 40vw;
+    max-width: 220px;
+    min-width: 100px;
+  }
+
+  /* Panel 1: Creatividad */
+  .service-panel.panel-1 {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .service-panel.panel-1 .service-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: center !important;
+    align-items: center !important;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .panel-1 .creatividad-img {
+    margin-right: 0;
+    margin-top: 30px;
+    margin-bottom: 0;
+    width: 40vw;
+    max-width: 220px;
+    min-width: 100px;
+  }
+
+  /* Panel 2: Branding */
+  .service-panel.panel-2 {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .service-panel.panel-2 .service-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: center !important;
+    align-items: center !important;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .panel-2 .favicon-img {
+    margin-left: 0;
+    margin-top: 30px;
+    margin-bottom: 0;
+    width: 40vw;
+    max-width: 220px;
+    min-width: 100px;
+  }
 }
