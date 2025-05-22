@@ -175,13 +175,12 @@ const Services = () => {
     return (
         <div className="services-container" ref={containerRef}>
             <div className="services-track" ref={trackRef}>
-                {servicesData.map((service) => (
+                {servicesData.map((service, idx) => (
                     <section
                         key={service.id}
-                        className={`service-panel ${service.className}`}
+                        className={`service-panel panel-${idx} ${service.className ? service.className : ''}`}
                     >
-                        <div className="nebula-glow"></div> 
-                        
+                        <div className="nebula-glow"></div>
                         {renderCosmicDust(gsap.utils.random(10, 18))}
                         <div className="service-content">
                             <h1>{service.title}</h1>
