@@ -1,175 +1,52 @@
 .timeline-v2-wrapper {
     background-color: #000000;
     color: #ffffff;
-    overflow: hidden; /* Para el pin y evitar scrolls inesperados */
-    
-      
+    overflow: hidden;
+    margin-top: 0;
+    padding-top: 0;
 }
 
 .timeline-v2-pin-container {
-    /* Este es el contenedor que será 'pinned' */
     width: 100%;
-    height: 100vh; /* Ocupa toda la pantalla */
-    position: relative; /* Para los elementos internos posicionados absolutamente */
-    overflow: hidden; /* Por si acaso */
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
 }
 
-/* El "Cometa" o línea de progreso */
+/* Línea de progreso blanca sin brillos */
 .timeline-v2-comet-track {
-    position: absolute; 
-    /* Centrado verticalmente y a la izquierda */
+    position: absolute;
     top: 50%;
-    left: 10vw; /* O un valor fijo como 100px */
+    left: 10vw;
     transform: translateY(-50%);
-    width: 6px; /* Grosor base de la estela */
-    height: 0; /* Se animará la altura */
+    width: 6px;
+    height: 0;
     background: linear-gradient(
         to bottom,
-        rgba(0, 191, 255, 0), 
-        rgba(255, 255, 255, 0.8) 70%, 
-        #f5ffff 
+        rgba(255,255,255,0),
+        #ffffff 100%
     );
-    box-shadow: 0 0 10px #ffffff, 0 0 20px #fcfcfc, 0 0 30px #ffffff, 0 0 40px #ffffff;
     border-radius: 3px;
     z-index: 10;
-    will-change: height; /* Optimización */
+    will-change: height;
+    box-shadow: none;
 }
 
-/* Contenedor para los paneles/pasos */
 .timeline-v2-panels-container {
     width: 100%;
-    /* No necesita height aquí, los paneles hijos lo definirán */
-    position: relative; /* Para que el pin de la sección del paso funcione correctamente */
+    position: relative;
 }
 
-.timeline-v2-panel {
-    width: 100%;
-    height: 100vh; /* Cada panel es una "página" completa */
-    display: flex;
-    /* align-items: center; No necesariamente, el contenido puede estar posicionado */
-    position: relative; /* Para el contenido y el punto */
-    overflow: hidden; /* Para evitar desbordes de animaciones internas */
-    /* background-color: #000; /* Redundante si el wrapper ya lo tiene */
-}
-
-.timeline-v2-dot {
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    background-color: rgba(0, 191, 255, 0.3); /* Azul semi-transparente */
-    border: 2px solid #00ffff;
-    border-radius: 50%;
-    box-shadow: 0 0 15px #00ffff, 0 0 25px #00c3ff, 0 0 5px #fff inset;
-    z-index: 15; /* Encima del cometa */
-    transform: translate(-50%, -50%); /* Para centrar el punto en sus coords top/left */
-    /* Los 'top' y 'left' se establecerán dinámicamente o en línea */
-    opacity: 0.7;
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Para efecto hover/active */
-}
-
-.timeline-v2-panel.is-active .timeline-v2-dot {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2);
-    box-shadow: 0 0 20px #00ffff, 0 0 35px #00c3ff, 0 0 50px #0077ff, 0 0 10px #fff inset;
-}
-
-.timeline-v2-content {
-    position: absolute; /* Posicionamiento flexible dentro del panel */
-    top: 50%;
-    left: calc(10vw + 80px); /* A la derecha de la línea/puntos, ajustar según 'left' de .timeline-v2-comet-track */
-    transform: translateY(-50%);
-    max-width: 60%; /* O un valor fijo */
-    color: #e0e0e0;
-    opacity: 0; /* GSAP lo animará */
-    /* transform: translateY(-50%) translateX(-30px); /* Estado inicial para animación de entrada */
-    will-change: opacity, transform; /* Optimización */
-}
-
-.timeline-v2-content h2 {
-    font-size: clamp(2em, 5vw, 3.5em);
-    color: #00ffff; /* Cian brillante */
-    margin-bottom: 20px;
-    text-shadow: 0 0 5px #00ffff, 0 0 10px #00c3ff;
-}
-
-.timeline-v2-content p {
-    font-size: clamp(1em, 2.5vw, 1.3em);
-    line-height: 1.7;
-    color: #cccccc;
-}
-
-/* Para la animación de la "cabeza del cometa" (opcional, pero da buen efecto) */
-.comet-head {
-    position: absolute;
-    bottom: -15px; /* Ligeramente por debajo del final de la línea */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 30px;
-    height: 30px;
-    background-color: #00ffff;
-    border-radius: 50%;
-    box-shadow: 0 0 20px 10px #00ffff, 0 0 30px 15px #00c3ff, 0 0 50px 25px rgba(0, 120, 255, 0.5);
-    filter: blur(5px); /* Efecto difuminado */
-    z-index: 11;
-    opacity: 0; /* GSAP lo animará */
-}
-
-/* Título general de la sección (opcional, puede estar fuera del pin) */
-.timeline-v2-intro-title {
-    height: 100vh; /* Ocupa una pantalla para presentarlo antes del pin */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: #000; /* Fondo negro */
-    color: #fff;
-    padding: 20px;
-}
-.timeline-v2-intro-title h1 {
-    font-size: clamp(2.5em, 6vw, 4.5em);
-    color: #00ffff;
-    margin-bottom: 15px;
-}
-.timeline-v2-intro-title p {
-    font-size: clamp(1em, 2.5vw, 1.5em);
-    color: #ccc;
-    max-width: 700px;
-}
-.timeline-v2-dot.is-active-dot { /* Nueva clase para el punto activo */
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.3); /* Un poco más grande */
-    background-color: #00ffff; /* Más brillante */
-    box-shadow: 0 0 25px #00ffff, 0 0 40px #00c3ff, 0 0 60px #0077ff, 0 0 15px #fff inset;
-}
 .timeline-v2-panel {
     width: 100%;
     height: 100vh;
     display: flex;
-    position: relative; /* Cambiado de absolute si están en flujo */
-    /* Si los paneles se superponen, los que no estén activos deberían ser invisibles: */
-    /* opacity: 0; */
-    /* pointer-events: none; */
-}
-.timeline-v2-dot.is-active-dot {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.3);
-    background-color: #00ffff;
-    box-shadow: 0 0 25px #00ffff, 0 0 40px #00c3ff, 0 0 60px #0077ff, 0 0 15px #fff inset;
-}
-
-.timeline-v2-panel {
-    width: 100%;
-    height: 100vh; /* Cada panel es pantalla completa */
-    display: flex;
-    /* align-items: center; */ /* Quitado para permitir posicionamiento más flexible del contenido */
-    position: absolute; /* IMPORTANTE: Los paneles se superpondrán */
+    position: absolute;
     top: 0;
     left: 0;
-    opacity: 0; /* Inicialmente invisibles */
-    visibility: hidden; /* Inicialmente no visibles ni interactuables */
-    pointer-events: none; /* No interactuables por defecto */
-    /* background-color: #000; /* Si el wrapper ya lo tiene, es redundante */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     will-change: opacity, visibility;
 }
 
@@ -177,7 +54,7 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    z-index: 5; /* El panel activo encima */
+    z-index: 5;
 }
 
 .timeline-v2-content {
@@ -186,20 +63,60 @@
     left: calc(10vw + 80px);
     transform: translateY(-50%);
     max-width: 60%;
-    color: #e0e0e0;
-    /* La opacidad y transformación para la entrada se manejarán por GSAP por panel */
+    color: #f5f5f5;
 }
 
 .timeline-v2-content h2 {
-    font-size: clamp(2em, 5vw, 3.5em);
-    color: #00ffff;
+    font-size: clamp(3em, 5vw, 4.5em);
+    color: #fff;
     margin-bottom: 20px;
-    text-shadow: 0 0 5px #00ffff, 0 0 10px #00c3ff;
+    text-shadow: none;
+    
 }
 
 .timeline-v2-content p {
     font-size: clamp(1em, 2.5vw, 1.3em);
     line-height: 1.7;
-    color: #cccccc;
+    color: #e0e0e0;
+}
+
+/* Comet head blanca sin brillos */
+.comet-head {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: none;
+    filter: none;
+    z-index: 11;
+    opacity: 0;
+}
+
+.timeline-v2-intro-title {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #000;
+    color: #fff;
+    padding: 0 20px;
+    margin-top: 0;
+}
+.timeline-v2-intro-title h1 {
+    font-size: clamp(2.5em, 6vw, 4.5em);
+    color: #fff;
+    margin-bottom: 15px;
+    text-shadow: none;
+}
+.timeline-v2-intro-title p {
+    font-size: clamp(1em, 2.5vw, 1.5em);
+    color: #e0e0e0;
+    max-width: 700px;
 }
 

@@ -33,7 +33,6 @@ const TimelineV2 = () => {
 
     const addToPanelRefs = (el) => el && !panelRefs.current.includes(el) && panelRefs.current.push(el);
     const addToContentRefs = (el) => el && !contentRefs.current.includes(el) && contentRefs.current.push(el);
-    const addToDotRefs = (el) => el && !dotRefs.current.includes(el) && dotRefs.current.push(el);
 
     useEffect(() => {
         const wrapper = wrapperRef.current;
@@ -177,20 +176,16 @@ const TimelineV2 = () => {
                 <p>Un viaje a través de las fases de creación, donde cada estrella es un hito.</p>
             </div>
             <div className="timeline-v2-wrapper" ref={wrapperRef}>
-                <div className="timeline-v2-pin-container" ref={pinContainerRef}> {/* 100vh, pinned */}
+                <div className="timeline-v2-pin-container" ref={pinContainerRef}>
                     <div className="timeline-v2-comet-track" ref={cometTrackRef}>
                         <div className="comet-head" ref={cometHeadRef}></div>
                     </div>
-                    {timelineData.map((item, index) => (
-                        <div key={`dot-${item.id}`} ref={addToDotRefs} className="timeline-v2-dot"></div>
-                    ))}
-                    
+                    {/* Eliminados los puntos visuales */}
                     {timelineData.map((item, index) => (
                         <section
                             key={item.id}
-                            className="timeline-v2-panel" // CSS maneja opacity/visibility con .is-active
+                            className="timeline-v2-panel"
                             ref={addToPanelRefs}
-                            
                         >
                             <div className="timeline-v2-content" ref={addToContentRefs}>
                                 <h2>{item.title}</h2>
