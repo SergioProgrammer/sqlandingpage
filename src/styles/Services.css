@@ -92,6 +92,34 @@
   margin-right: auto;
 }
 
+/* 3D Image Styles - sin recuadros ni fondo */
+.service-img-3d-wrapper {
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  min-height: 320px;
+  margin-right: 40px;
+  flex-wrap: wrap;
+}
+
+.service-img-3d {
+  width: 28vw;
+  max-width: 340px;
+  min-width: 100px;
+  height: auto;
+  border-radius: 18px;
+  object-fit: cover;
+  display: block;
+  will-change: transform, opacity;
+  /* Quitar fondo y recuadros */
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+
 /* Responsive 900px: Columnas */
 @media (max-width: 900px) {
   .service-panel {
@@ -117,6 +145,17 @@
     width: 60vw;
     max-width: 220px;
     min-width: 100px;
+  }
+
+  .service-img-3d-wrapper {
+    margin: 0 0 30px 0;
+    justify-content: center;
+    gap: 12px;
+  }
+  .service-img-3d {
+    width: 60vw;
+    max-width: 220px;
+    min-width: 80px;
   }
 }
 

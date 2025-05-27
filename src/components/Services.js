@@ -8,24 +8,28 @@ gsap.registerPlugin(ScrollTrigger);
 const Services = () => {
     const servicesData = [
         {
-            id: 'web',
-            title: 'Estrategia',
-            description: 'La estrategia guía cada una de nuestras decisiones y está integrada desde el inicio en todo nuestro proceso.'
-        },
-        {
-            id: 'audit',
+            id: 'creatividad',
             title: 'Creatividad',
-            description: 'Ya sea que necesites un sitio web, una campaña publicitaria, o un sistema de diseño...'
+            description: 'Desde conceptos visuales hasta campañas, creamos lo que conecta e impacta',
+            images: ['creatividad1.svg', 'creatividad2.svg', 'creatividad3.svg']
         },
         {
-            id: 'marketing',
+            id: 'estrategia',
+            title: 'Estrategia',
+            description: 'nvestigamos tu sector, entendemos tu marca y diseñamos un plan sólido enfocado en resultados',
+            images: ['Estartegia.svg', 'Estartegia.svg']
+        },
+        {
+            id: 'branding',
             title: 'Branding',
-            description: 'Nos destacamos tanto en hacer evolucionar marcas existentes como en dar vida a nuevas.'
+            description: 'Diseñamos tu identidad visual, verbal y emocional para que transmita lo que realmente eres',
+            images: ['Branding1.svg', 'Branding2.svg', 'Branding3.svg']
         },
         {
-            id: 'design',
+            id: 'desarrollo',
             title: 'Desarrollo',
-            description: 'Creamos identidades visuales que brillan con luz propia, transformando conceptos en arte digital estelar.'
+            description: 'Creamos sitios web, e-commerce inmersivos como este, que no solo funcionan, sino que enamoran',
+            images: ['Desarrollo1.svg', 'Desarrollo2.svg', 'Desarrollo3.svg']
         }
     ];
 
@@ -33,6 +37,7 @@ const Services = () => {
     const trackRef = useRef(null);
     const mainTweenRef = useRef(null);
     const panelAnimationsRef = useRef([]);
+    const imageRefs = useRef([]);
 
     useEffect(() => {
         const container = containerRef.current;
@@ -89,6 +94,27 @@ const Services = () => {
             .fromTo(paragraph, { autoAlpha: 0, y: 50 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' }, "-=0.6");
         });
 
+        // Efecto 3D inmersivo para cada imagen de cada panel
+        imageRefs.current.forEach((imgArr, idx) => {
+            if (!imgArr) return;
+            gsap.set(imgArr, { autoAlpha: 0, y: 80, scale: 1.15, rotateY: -25 });
+            gsap.to(imgArr, {
+                scrollTrigger: {
+                    trigger: panels[idx],
+                    containerAnimation: mainTweenRef.current,
+                    start: 'left 70%',
+                    end: 'right 30%',
+                    scrub: true
+                },
+                autoAlpha: 1,
+                y: 0,
+                scale: 1,
+                rotateY: 0,
+                stagger: 0.18,
+                ease: "expo.out"
+            });
+        });
+
         return () => {
             if (mainTweenRef.current) mainTweenRef.current.kill();
             panelAnimationsRef.current.forEach(anim => anim && anim.kill());
@@ -100,19 +126,24 @@ const Services = () => {
             <div className="services-track" ref={trackRef}>
                 {servicesData.map((service, idx) => (
                     <section key={service.id} className={`service-panel panel-${idx}`}>
-                        {idx === 0 && (
-                            <img src="/img/estrategia.jpg" alt="Estrategia" className="estrategia-img" />
-                        )}
-                        {idx === 1 && (
-                            <img src="/img/creatividad.webp" alt="Creatividad" className="creatividad-img" />
-                        )}
+                        <div className="service-img-3d-wrapper">
+                            {service.images.map((img, imgIdx) => (
+                                <img
+                                    key={img}
+                                    src={`/img/${img}`}
+                                    alt={service.title}
+                                    className="service-img-3d"
+                                    ref={el => {
+                                        if (!imageRefs.current[idx]) imageRefs.current[idx] = [];
+                                        imageRefs.current[idx][imgIdx] = el;
+                                    }}
+                                />
+                            ))}
+                        </div>
                         <div className="service-content">
                             <h1>{service.title}</h1>
                             <p>{service.description}</p>
                         </div>
-                        {idx === 2 && (
-                            <img src="#" alt="Branding" className="favicon-img" />
-                        )}
                     </section>
                 ))}
             </div>
