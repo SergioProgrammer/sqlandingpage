@@ -173,7 +173,7 @@ const TimelineV2 = () => {
         <>
             <div className="timeline-v2-intro-title">
                 <h1>Nuestro Proceso Creativo</h1>
-                <p>Un viaje a través de las fases de creación, donde cada estrella es un hito.</p>
+                <p>Un viaje a través de las fases de creación</p>
             </div>
             <div className="timeline-v2-wrapper" ref={wrapperRef}>
                 <div className="timeline-v2-pin-container" ref={pinContainerRef}>

@@ -45,76 +45,72 @@
 
 .personas-cards {
     display: flex;
-    flex-direction: row;
-    gap: 40px;
     justify-content: center;
-    align-items: stretch;
-    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 48px;
+    flex-wrap: wrap;
 }
 
 .persona-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(6px);
     border-radius: 28px;
     padding: 70px 60px;
-    width: 100%;
     max-width: 600px;
-    min-width: 320px;
-    margin: 0 0 40px 0;
+    width: 100%;
+    transition: all 0.3s ease-out;
+    perspective: 800px;
+    transform-style: preserve-3d;
+    box-shadow: 0 10px 60px rgba(0, 0, 0, 0.3);
+    will-change: transform;
+    transform: translateY(40px) scale(0.96);
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
-                box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
-                border-color 0.4s ease,
-                background-color 0.4s ease;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    opacity: 0;
-    transform: translateY(50px) scale(0.96);
 }
 
 .persona-card:hover {
-    transform: translateY(-12px) scale(1.02);
-    border-color: rgba(255, 255, 255, 0.15);
-    background: rgba(255, 255, 255, 0.04);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.personas-title {
+    font-size: clamp(3em, 7vw, 5em);
+    text-shadow: 0 2px 20px rgba(255,255,255,0.1);
+}
+
+.personas-summary span {
+    color: #00ffe5;
+    text-shadow: 0 0 10px rgba(0,255,229,0.5);
 }
 
 .persona-avatar-wrapper {
-    width: 130px;
-    height: 130px;
-    margin-bottom: 40px;
-    position: relative;
-    perspective: 500px;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 32px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .persona-avatar-container {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(145deg, #2a2e37, #1e222a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+}
+
+.persona-photo {
     width: 100%;
     height: 100%;
+    object-fit: cover;
     border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(145deg, #2a2e37, #1e222a);
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3),
-                0 5px 15px rgba(0,0,0,0.2),
-                0 0 0 3px rgba(255,255,255,0.03);
-    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transform-style: preserve-3d;
-}
-
-.persona-card:hover .persona-avatar-container {
-    transform: rotateY(15deg) rotateX(5deg) scale(1.05);
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3),
-                0 8px 25px rgba(0,0,0,0.25),
-                0 0 0 3px rgba(255,255,255,0.07);
-}
-
-.persona-avatar {
-    width: 90%;
-    height: 90%;
-    display: block;
-    transform: translateZ(10px);
 }
 
 .persona-name {
@@ -143,23 +139,9 @@
     opacity: 0.9;
 }
 
-.personas-summary {
-    margin-top: 90px;
-    font-family: 'Inter', sans-serif;
-    font-size: 1.7em;
-    color: #e5e7eb;
-    line-height: 1.9;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-    opacity: 0;
-    transform: translateY(30px);
-}
 
-.personas-summary span {
-    color: #ffffff;
-    font-weight: 700;
-}
+
+
 
 @media (max-width: 800px) {
     .persona-card {
