@@ -17,7 +17,7 @@ const Services = () => {
             id: 'estrategia',
             title: 'Estrategia',
             description: 'Investigamos tu sector, entendemos tu marca y diseñamos un plan sólido enfocado en resultados',
-            images: ['Estartegia.svg', 'Estartegia.svg']
+            images: ['Estartegia.svg',]
         },
         {
             id: 'branding',

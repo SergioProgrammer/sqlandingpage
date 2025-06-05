@@ -1,6 +1,5 @@
 import React from 'react';
 import '../styles/Footer.css';
-import { FaInstagram } from 'react-icons/fa'; 
 
 const Footer = () => {
     const handleInstagramClick = () => {
@@ -12,10 +11,22 @@ const Footer = () => {
             <div className="footer-content">
             </div>
             <div className="footer-credits">
-                <p>
+                <p style={{ fontSize: '1em', color: 'black' }}>
                     &copy; 2025 SQSTUDIO | Todos los derechos reservados. Visita nuestro{' '}
-                    <button onClick={handleInstagramClick} className="social-button">
-                        <FaInstagram className="instagram-icon" /> 
+                    <button
+                        onClick={handleInstagramClick}
+                        className="social-button"
+                        style={{
+                            color: 'black',
+                            background: 'none',
+                            border: 'none',
+                            textDecoration: 'underline',
+                            cursor: 'pointer',
+                            padding: 0,
+                            fontSize: '1em',
+                        }}
+                    >
+                        Instagram
                     </button>
                 </p>
             </div>
